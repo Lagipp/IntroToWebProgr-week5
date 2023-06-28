@@ -6,6 +6,9 @@ const fetchData = async () => {
   const res = await fetch(url);
   const data = await res.json();
 
+  // console.log(data.features.properties.name);
+  // const features = data.features;
+
   initMap(data);
 };
 
@@ -14,7 +17,26 @@ const initMap = (data) => {
     minZoom: -3
   });
 
+  // const municipalitiesData = [];
+  // let id = 0;
+
+  // data.features.forEach((el) => {
+  //   municipalitiesData.push({
+  //     id: id,
+  //     name: el.properties.nimi
+  //   });
+  //   id += 1;
+  // });
+
+  // console.log(municipalitiesData);
+
+  const getFeature = (feature, layer) => {
+    if (feature && feature.properties)
+      layer.bindTooltip(feature.properties.nimi);
+  };
+
   let geoJson = L.geoJSON(data, {
+    onEachFeature: getFeature,
     weight: 2
   }).addTo(map);
 
